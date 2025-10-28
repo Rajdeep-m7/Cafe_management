@@ -3,7 +3,7 @@ import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } 
 import Menu from '../pages/menu'
 import Orders from '../pages/Orders'
 import Layout from '../src/Layout';
-import Cart from '../pages/Cart';
+import Cart from '../pages/CartPage';
 
 const router= createBrowserRouter (
     createRoutesFromElements(
