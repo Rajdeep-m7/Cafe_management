@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { IoLockClosedOutline } from "react-icons/io5";
-import MenuCard from '../Components/MenuCard';
+import MenuCard from '../components/MenuCard';
 import { useCart } from '../context/CartContext';
 import { NavLink } from "react-router";
 function Menu() {

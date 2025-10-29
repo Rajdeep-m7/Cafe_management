@@ -1,8 +1,8 @@
 import React, { useState } from 'react'
 import { NavLink } from 'react-router'
 import { GoArrowLeft } from "react-icons/go";
-import Order from '../Components/Order';
-import AdminMenu from '../Components/AdminMenu';
+import Order from '../components/Order';
+import AdminMenu from '../components/AdminMenu';
 
 function Admin() {
   const [activeItem , setItem] = useState("Orders");

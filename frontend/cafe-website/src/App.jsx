@@ -1,7 +1,7 @@
 import React from 'react'
-import Menu from '../pages/menu'
-import UserRoutes from '../Routes/User'
-import { CartProvider } from '../context/CartContext'
+import Menu from './pages/menu'
+import UserRoutes from './Routes/User'
+import { CartProvider } from './context/CartContext'
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

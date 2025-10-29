@@ -2,9 +2,10 @@ import React from 'react'
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router'
 import Menu from '../pages/menu'
 import Orders from '../pages/Orders'
-import Layout from '../src/Layout';
+import Layout from '../Layout';
 import Cart from '../pages/CartPage';
 import Admin from '../pages/Admin';
+import Login from '../pages/Login';
 
 const router= createBrowserRouter (
     createRoutesFromElements(
@@ -16,6 +17,7 @@ const router= createBrowserRouter (
         </Route>
         <Route>
             <Route path='/Admin' element={<Admin />} />
+            <Route path='/Admin/Login' element={<Login />} />
         </Route>
         </>
        
