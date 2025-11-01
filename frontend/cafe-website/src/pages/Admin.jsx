@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router";
+import { NavLink } from "react-router"; 
 import { GoArrowLeft } from "react-icons/go";
 import axios from "axios";
 import Order from "../components/Order";
 import AdminMenu from "../components/AdminMenu";
-import AddEditForm from "../components/AddEditForm"; // 🧩 import the form component
+import AddForm from "../components/AddForm";  
+import EditForm from "../components/EditForm"; 
 
 function Admin() {
   const [activeItem, setItem] = useState("Orders");
-  const [formMode, setFormMode] = useState(null); // "add" | "edit" | null
+  const [showAddForm, setShowAddForm] = useState(false);
+  const [showEditForm, setShowEditForm] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
 
-  // ✅ Fetch menu items from API
+
   const fetchMenuItems = async () => {
     try {
       const res = await axios.get("http://localhost:3000/api/menu");
@@ -27,34 +29,49 @@ function Admin() {
   }, [activeItem]);
 
   const handleAdd = () => {
-    setFormMode("add");
+    setShowAddForm(true);
+    setShowEditForm(false);
     setSelectedItem(null);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleEdit = (item) => {
-    setFormMode("edit");
+    setShowEditForm(true);
+    setShowAddForm(false);
     setSelectedItem(item);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const handleCancel = () => {
-    setFormMode(null);
+    setShowAddForm(false);
+    setShowEditForm(false);
     setSelectedItem(null);
   };
 
+ 
   const handleSuccess = () => {
-    fetchMenuItems(); // refresh list
+    fetchMenuItems();
     handleCancel();
   };
 
+  const handleDelete = async (id) => {
+  if (!window.confirm("Are you sure you want to delete this item?")) return;
+
+  try {
+    await axios.delete(`http://localhost:3000/api/menu/${id}`);
+    alert("Item deleted successfully");
+    fetchMenuItems(); 
+  } catch (err) {
+    console.error("Error deleting item:", err.message );
+    alert("Failed to delete item");
+  }
+};
+
+
   return (
-    <div className="bg-gray-50 p-5 md:p-10 md:px-20 h-full">
-      {/* --- Header --- */}
+    <div className="bg-gray-50 p-5 min-h-lvh md:p-10 md:px-20 h-full">
       <div>
-        <h1 className="text-3xl md:text-4xl font-bold mb-5">
-          Admin Dashboard
-        </h1>
+        <h1 className="text-3xl md:text-4xl font-bold mb-5">Admin Dashboard</h1>
         <div>
           <NavLink
             to="/"
@@ -65,7 +82,6 @@ function Admin() {
         </div>
       </div>
 
-      {/* --- Tabs --- */}
       <div className="flex gap-3 mt-5 bg-gray-200 p-1 w-fit rounded-lg font-semibold mb-5">
         <button
           onClick={() => setItem("Orders")}
@@ -86,7 +102,6 @@ function Admin() {
         </button>
       </div>
 
-      {/* --- Conditional Sections --- */}
       {activeItem === "Orders" ? (
         <Order
           order_id={123456789}
@@ -101,10 +116,11 @@ function Admin() {
         />
       ) : (
         <div>
-          {/* 🧩 Show Add/Edit Form */}
-          {formMode && (
-            <AddEditForm
-              mode={formMode}
+          {showAddForm && (
+            <AddForm onCancel={handleCancel} onSuccess={handleSuccess} />
+          )}
+          {showEditForm && selectedItem && (
+            <EditForm
               item={selectedItem}
               onCancel={handleCancel}
               onSuccess={handleSuccess}
@@ -112,12 +128,14 @@ function Admin() {
           )}
 
           {/* --- Add Button --- */}
-          <button
-            onClick={handleAdd}
-            className="border border-gray-300 cursor-pointer hover:bg-green-600 bg-green-500 font-semibold text-white p-2 px-4 rounded-lg"
-          >
-            + Add new Item
-          </button>
+          {!showAddForm && !showEditForm && (
+            <button
+              onClick={handleAdd}
+              className="border border-gray-300 cursor-pointer hover:bg-green-600 bg-green-500 font-semibold text-white p-2 px-4 rounded-lg"
+            >
+              + Add new Item
+            </button>
+          )}
 
           {/* --- Menu Grid --- */}
           <div className="mt-6 grid gap-10 grid-cols-[repeat(auto-fit,minmax(260px,1fr))]">
@@ -128,7 +146,8 @@ function Admin() {
                 name={item.name}
                 description={item.description}
                 price={item.price}
-                onEdit={() => handleEdit(item)} // 👈 pass edit handler
+                onEdit={() => handleEdit(item)}
+                onDelete={() => handleDelete(item._id)} // 👈 pass edit handler
               />
             ))}
           </div>

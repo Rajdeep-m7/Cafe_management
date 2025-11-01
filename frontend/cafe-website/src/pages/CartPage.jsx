@@ -13,7 +13,7 @@ function CartPage() {
   } = useCart();
 
   return (
-    <div className="md:p-10 p-5 bg-gray-50 min-h-screen">
+    <div className="md:p-10 p-5 bg-gray-50 min-h-lvh">
       <h1 className="text-3xl font-bold mb-6">🛒 Your Cart</h1>
 
       <Cart

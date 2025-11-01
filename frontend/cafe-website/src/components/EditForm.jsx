@@ -1,54 +1,54 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const AddEditForm = ({ mode = "add", item, onCancel, onSuccess }) => {
+const EditForm = ({ item, onCancel, onSuccess }) => {
   const [formData, setFormData] = useState({
     name: item?.name || "",
     description: item?.description || "",
     category: item?.category || "",
     price: item?.price || "",
-    image: null,
+    image: item?.image || "",
   });
 
   const [loading, setLoading] = useState(false);
 
-  // Handle input changes
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === "image") {
-      setFormData({ ...formData, image: files[0] });
+    if (name === "image" && files.length > 0) {
+      handleImageUpload(files[0]); 
     } else {
       setFormData({ ...formData, [name]: value });
     }
   };
 
-  // Submit to backend
+  const handleImageUpload = async (file) => {
+    const data = new FormData();
+    data.append("file", file);
+    data.append("upload_preset", "Cafe_Menu"); 
+
+    try {
+      const res = await axios.post(
+        "https://api.cloudinary.com/v1_1/dwygkjbmc/image/upload",
+        data
+      );
+      setFormData((prev) => ({ ...prev, image: res.data.secure_url }));
+    } catch (error) {
+      console.error("Image upload failed:", error);
+      alert("Failed to upload image");
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
 
     try {
-      // Create FormData object (required for multer)
-      const data = new FormData();
-      data.append("name", formData.name);
-      data.append("description", formData.description);
-      data.append("category", formData.category);
-      data.append("price", formData.price);
-      if (formData.image) data.append("image", formData.image);
-
-      if (mode === "add") {
-        await axios.post("http://localhost:3000/api/addMenu", data, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      } else {
-        await axios.put(`http://localhost:5000/editMenu/${item._id}`, data, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
-      }
-
-      onSuccess?.(); // refresh menu list
+      await axios.put(`http://localhost:3000/api/menu/${item._id}`, formData, {
+        headers: { "Content-Type": "application/json" },
+      });
+      onSuccess?.();
     } catch (err) {
-      console.error("Error submitting form:", err);
+      console.error("Error updating item:", err);
       alert("Error saving item");
     } finally {
       setLoading(false);
@@ -60,9 +60,7 @@ const AddEditForm = ({ mode = "add", item, onCancel, onSuccess }) => {
       onSubmit={handleSubmit}
       className="bg-gray-100 p-6 rounded-lg shadow-md mb-6 max-w-2xl mx-auto"
     >
-      <h2 className="text-xl font-semibold mb-4">
-        {mode === "add" ? "Add New Menu Item" : "Edit Menu Item"}
-      </h2>
+      <h2 className="text-xl font-semibold mb-4">Edit Menu Item</h2>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <input
@@ -101,7 +99,6 @@ const AddEditForm = ({ mode = "add", item, onCancel, onSuccess }) => {
           accept="image/*"
           onChange={handleChange}
           className="p-2 border rounded-md"
-          required={mode === "add"}
         />
 
         <textarea
@@ -113,6 +110,14 @@ const AddEditForm = ({ mode = "add", item, onCancel, onSuccess }) => {
           required
         ></textarea>
       </div>
+
+      {formData.image && (
+        <img
+          src={formData.image}
+          alt="Preview"
+          className="w-32 h-32 object-cover rounded-md mt-3"
+        />
+      )}
 
       <div className="mt-4 flex gap-3">
         <button
@@ -135,4 +140,4 @@ const AddEditForm = ({ mode = "add", item, onCancel, onSuccess }) => {
   );
 };
 
-export default AddEditForm;
+export default EditForm;
