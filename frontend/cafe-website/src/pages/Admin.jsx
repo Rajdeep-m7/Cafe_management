@@ -6,6 +6,7 @@ import Order from "../components/Order";
 import AdminMenu from "../components/AdminMenu";
 import AddForm from "../components/AddForm";  
 import EditForm from "../components/EditForm"; 
+import { useQuery } from "@tanstack/react-query";
 
 function Admin() {
   const [activeItem, setItem] = useState("Orders");
@@ -14,6 +15,20 @@ function Admin() {
   const [selectedItem, setSelectedItem] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
 
+  const fetchOrders = async () => {
+    try {
+      const { data } = await axios.get("http://localhost:3000/api/allOrders");
+      return data.orders || [];
+    } catch (err) {
+      console.log("error : ", err.message);
+      return [];
+    }
+  };
+
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["orders"],
+    queryFn: fetchOrders,
+  });
 
   const fetchMenuItems = async () => {
     try {
@@ -48,25 +63,23 @@ function Admin() {
     setSelectedItem(null);
   };
 
- 
   const handleSuccess = () => {
     fetchMenuItems();
     handleCancel();
   };
 
   const handleDelete = async (id) => {
-  if (!window.confirm("Are you sure you want to delete this item?")) return;
+    if (!window.confirm("Are you sure you want to delete this item?")) return;
 
-  try {
-    await axios.delete(`http://localhost:3000/api/menu/${id}`);
-    alert("Item deleted successfully");
-    fetchMenuItems(); 
-  } catch (err) {
-    console.error("Error deleting item:", err.message );
-    alert("Failed to delete item");
-  }
-};
-
+    try {
+      await axios.delete(`http://localhost:3000/api/menu/${id}`);
+      alert("Item deleted successfully");
+      fetchMenuItems();
+    } catch (err) {
+      console.error("Error deleting item:", err.message);
+      alert("Failed to delete item");
+    }
+  };
 
   return (
     <div className="bg-gray-50 p-5 min-h-lvh md:p-10 md:px-20 h-full">
@@ -103,17 +116,12 @@ function Admin() {
       </div>
 
       {activeItem === "Orders" ? (
-        <Order
-          order_id={123456789}
-          number={9832349168}
-          date="12/3/25"
-          time="12:05"
-          items={[
-            { name: "Coffee", quantity: 2, price: 240 },
-            { name: "Burger", quantity: 1, price: 120 },
-          ]}
-          total_price={360}
-        />
+        <>
+          
+          {data?.map((order) => (
+            <Order key={order._id} orders={order} />
+          ))}
+        </>
       ) : (
         <div>
           {showAddForm && (
@@ -126,8 +134,6 @@ function Admin() {
               onSuccess={handleSuccess}
             />
           )}
-
-          {/* --- Add Button --- */}
           {!showAddForm && !showEditForm && (
             <button
               onClick={handleAdd}
@@ -136,8 +142,6 @@ function Admin() {
               + Add new Item
             </button>
           )}
-
-          {/* --- Menu Grid --- */}
           <div className="mt-6 grid gap-10 grid-cols-[repeat(auto-fit,minmax(260px,1fr))]">
             {menuItems.map((item) => (
               <AdminMenu
@@ -147,7 +151,7 @@ function Admin() {
                 description={item.description}
                 price={item.price}
                 onEdit={() => handleEdit(item)}
-                onDelete={() => handleDelete(item._id)} // 👈 pass edit handler
+                onDelete={() => handleDelete(item._id)}
               />
             ))}
           </div>

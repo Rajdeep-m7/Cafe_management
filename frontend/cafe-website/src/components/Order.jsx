@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 
-function Order({ order_id, number, date, time, items, total_price }) {
+function Order({ orders }) {
+  console.log(orders);
+  const{phone , total_price , order_items ,_id}= orders;
   const [status , setStatus]= useState("Pending");
   const handleChange=(e) =>{
     const newStatus = e.target.value;
     setStatus(newStatus);
-    console.log("status:", newStatus);
+    console.log("status:", newStatus,_id);
   } 
   return (
-    <div className="p-5 bg-white rounded-xl shadow-md w-full relative">
+    <div className="p-5 bg-white rounded-xl shadow-md w-full relative mt-5">
       <select
         value={status}
         onChange={handleChange}
@@ -17,22 +19,20 @@ function Order({ order_id, number, date, time, items, total_price }) {
         <option value="Pending">Pending</option>
         <option value="Complete">Complete</option>
       </select>
-      <h1 className="text-2xl font-semibold ">Order #{order_id}</h1>
-      <div className="flex text-gray-500 text-sm mb-3">
-        <p>{number}</p>
-        <span>•</span>
-        <p>{date}</p>
-        <span>•</span>
-        <p>{time}</p>
+      <h1 className="md:text-2xl font-semibold ">Order #{_id}</h1>
+      <div className="flex text-gray-500 text-sm mb-3 mt-2">
+        <p >{phone}</p>
+        <span className="mx-2"> • </span>
+        {new Date(orders.createdAt).toLocaleString()}
       </div>
 
       <div className="py-2">
-        {items.map((item, index) => (
+        {order_items.map((item, index) => (
           <div key={index} className="flex justify-between py-1">
-            <p>
-              {item.name} × {item.quantity}
+            <p className="text-sm md:text-lg">
+              {item.item_name} × {item.item_quantity}
             </p>
-            <p>₹{item.price}</p>
+            <p className="text-sm md:text-lg">₹{item.item_price}</p>
           </div>
         ))}
       </div>

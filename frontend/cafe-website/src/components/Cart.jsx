@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import { toast } from "react-toastify";
 
@@ -21,38 +22,52 @@ function Cart({
     if (error) setError("");
   };
 
-  const handleOrder = (e) => {
-    e.preventDefault();
+  
 
-    if (!phone || phone.length !== 10) {
-      setError("Please enter a valid 10-digit phone number.");
-      return;
-    }
+  const handleOrder = async (e) => {
+  e.preventDefault();
 
-    if (cartItems.length === 0) {
-      alert("Your cart is empty!");
-      return;
-    }
+  if (!phone || phone.length !== 10) {
+    setError("Please enter a valid 10-digit phone number.");
+    return;
+  }
 
-    setError("");
+  if (cartItems.length === 0) {
+    alert("Your cart is empty!");
+    return;
+  }
 
-    toast.info("Order placed successfully!", {
-    position: "bottom-center",
-    theme: "light",
+  try {
+    const orderData = {
+      phone,
+      total_price: totalPrice,
+      order_items: cartItems.map((item) => ({
+        item_name: item.name,
+        item_quantity: item.quantity,
+        item_price: item.price,
+      })),
+    };
+
+    const response = await axios.post("http://localhost:3000/api/addOrder", orderData);
+
+    toast.success("✅ Order placed successfully!", {
+      position: "bottom-center",
+      theme: "light",
     });
 
-    console.log("🧾 Order Details:");
-    console.table(cartItems);
-    console.log("📞 Customer Phone:", phone);
-    console.log("💰 Total Price:", totalPrice);
+    console.log("🧾 Order saved:", response.data);
 
-    alert("✅ Order placed successfully! Check console for details.");
     clearCart();
     setPhone("");
-    setTimeout(() => {
-      navigate("/"); // go back to home page
-    }, 1500);
-  };
+    setTimeout(() => navigate("/"), 1500);
+  } catch (error) {
+    console.error("❌ Error placing order:", error.response?.data || error.message);
+    toast.error("Failed to place order. Please try again.", {
+      position: "bottom-center",
+      theme: "light",
+    });
+  }
+};
 
   return (
     <div className="bg-white p-3 sm:p-8 rounded-none sm:rounded-2xl shadow-none sm:shadow-lg max-w-3xl mx-auto mt-2 sm:mt-10">
