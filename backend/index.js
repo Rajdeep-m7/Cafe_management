@@ -14,7 +14,7 @@ connectDb();
 
 app.use(
   cors({
-    origin: "https://cafe-management-frontend.onrender.com/", 
+    origin: "https://cafe-management-frontend.onrender.com", 
     credentials: true,
   })
 );
