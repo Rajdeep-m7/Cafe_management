@@ -1,12 +1,12 @@
 import React from 'react'
 import { createBrowserRouter, createRoutesFromElements, Route, RouterProvider } from 'react-router'
-import Menu from '../pages/menu'
 import Orders from '../pages/Orders'
 import Layout from '../Layout';
 import Cart from '../pages/CartPage';
 import Admin from '../pages/Admin';
 import Login from '../pages/Login';
 import ProtectedRoute from './ProtectedRoute';
+import Menu from '@/pages/Menu';
 
 const router= createBrowserRouter (
     createRoutesFromElements(
