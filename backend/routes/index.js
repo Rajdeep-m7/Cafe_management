@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { addMenu, deleteMenu, getMenu, updateMenu } from "../controllers/menu.controller.js";
 import multer from "multer";
-import { addOrder, getAllOrders, getOrdersByPhone } from "../controllers/order.controller.js";
+import { addOrder, getAllOrders, getOrdersByPhone, updateOrderStatus } from "../controllers/order.controller.js";
 
 const router = Router();
 
@@ -16,4 +16,6 @@ router.delete("/menu/:id", deleteMenu);
 router.get("/allOrders",getAllOrders);
 router.get("/orders/:phone", getOrdersByPhone);
 router.post("/addOrder",addOrder);
+router.put("/orders/:id/status",updateOrderStatus);
+
 export default router;

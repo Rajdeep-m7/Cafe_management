@@ -6,6 +6,7 @@ import Layout from '../Layout';
 import Cart from '../pages/CartPage';
 import Admin from '../pages/Admin';
 import Login from '../pages/Login';
+import ProtectedRoute from './ProtectedRoute';
 
 const router= createBrowserRouter (
     createRoutesFromElements(
@@ -16,8 +17,8 @@ const router= createBrowserRouter (
             <Route path='/Cart' element={<Cart />} />
         </Route>
         <Route>
-            <Route path='/Admin' element={<Admin />} />
-            <Route path='/Admin/Login' element={<Login />} />
+            <Route path='/login' element={<Login />} />
+            <Route path='/Admin' element={<ProtectedRoute> <Admin /> </ProtectedRoute> } />
         </Route>
         </>
        

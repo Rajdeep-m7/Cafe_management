@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router"; 
+import { NavLink, useNavigate } from "react-router"; 
 import { GoArrowLeft } from "react-icons/go";
 import axios from "axios";
 import Order from "../components/Order";
@@ -7,13 +7,16 @@ import AdminMenu from "../components/AdminMenu";
 import AddForm from "../components/AddForm";  
 import EditForm from "../components/EditForm"; 
 import { useQuery } from "@tanstack/react-query";
+import { useAuth } from "@/context/AuthContext";
 
 function Admin() {
+  const {logout}= useAuth();
   const [activeItem, setItem] = useState("Orders");
   const [showAddForm, setShowAddForm] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [menuItems, setMenuItems] = useState([]);
+  const navigate = useNavigate();
 
   const fetchOrders = async () => {
     try {
@@ -38,6 +41,11 @@ function Admin() {
       console.error("Error fetching menu:", error);
     }
   };
+  const handleLogout=async()=>{
+    await logout();
+    console.log("logout succesfull");
+    navigate('/');
+  }
 
   useEffect(() => {
     if (activeItem === "Menu") fetchMenuItems();
@@ -85,12 +93,18 @@ function Admin() {
     <div className="bg-gray-50 p-5 min-h-lvh md:p-10 md:px-20 h-full">
       <div>
         <h1 className="text-3xl md:text-4xl font-bold mb-5">Admin Dashboard</h1>
-        <div>
-          <NavLink
-            to="/"
+        <div className="flex gap-5">
+          <NavLink 
+          to="/"
             className="cursor-pointer w-fit border-gray-300 bg-white md:right-10 hover:bg-green-500 hover:text-white font-semibold flex items-center gap-1 border p-1 rounded-lg"
           >
             <GoArrowLeft /> Back to Home
+          </NavLink>
+          <NavLink
+            onClick={handleLogout}
+            className="px-5 cursor-pointer w-fit border-gray-300 bg-white md:right-10 hover:bg-green-500 hover:text-white font-semibold flex items-center gap-1 border p-1 rounded-lg"
+          >
+             Log Out
           </NavLink>
         </div>
       </div>

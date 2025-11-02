@@ -1,14 +1,39 @@
-import React, { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+
+const BASE_URL = "http://localhost:3000/api/orders";
 
 function Order({ orders }) {
-  console.log(orders);
   const{phone , total_price , order_items ,_id}= orders;
-  const [status , setStatus]= useState("Pending");
+  const [status , setStatus]= useState(Order.status);
+  useEffect(() => {
+  setStatus(orders.status);
+  }, [orders.status]);
+
+
+  const updateStatus = useMutation({
+    mutationFn: async (newStatus) => {
+      const res = await axios.put(`${BASE_URL}/${_id}/status`, { status: newStatus });
+      return res.data;
+    },
+    onSuccess: (data) => {
+      console.log("✅ Status updated:", data);
+    },
+    onError: (err) => {
+      console.error("❌ Failed to update:", err);
+      alert("Failed to update status. Please try again.");
+    },
+  });
+
   const handleChange=(e) =>{
     const newStatus = e.target.value;
     setStatus(newStatus);
+    updateStatus.mutate(newStatus);
     console.log("status:", newStatus,_id);
   } 
+
+
   return (
     <div className="p-5 bg-white rounded-xl shadow-md w-full relative mt-5">
       <select
@@ -16,8 +41,8 @@ function Order({ orders }) {
         onChange={handleChange}
         className="border rounded-lg border-gray-400 p-1 md:p-2 px-3 md:absolute md:top-1 md:right-1"
       >
-        <option value="Pending">Pending</option>
-        <option value="Complete">Complete</option>
+        <option value="pending">Pending</option>
+        <option value="complete">Complete</option>
       </select>
       <h1 className="md:text-2xl font-semibold ">Order #{_id}</h1>
       <div className="flex text-gray-500 text-sm mb-3 mt-2">
