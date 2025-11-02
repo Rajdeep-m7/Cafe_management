@@ -48,7 +48,7 @@ function Cart({
       })),
     };
 
-    const response = await axios.post("http://localhost:3000/api/addOrder", orderData);
+    const response = await axios.post("https://cafe-management-a7uc.onrender.com/api/addOrder", orderData);
 
     toast.success("✅ Order placed successfully!", {
       position: "bottom-center",
@@ -130,14 +130,10 @@ function Cart({
           ))}
 
           <hr className="my-4 sm:my-5" />
-
-          {/* TOTAL */}
           <div className="flex justify-between items-center text-base sm:text-xl font-bold text-gray-800">
             <span>Total:</span>
             <span>₹{totalPrice}</span>
           </div>
-
-          {/* PHONE INPUT */}
           <div>
             <label
               htmlFor="phone"

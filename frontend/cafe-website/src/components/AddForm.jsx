@@ -30,7 +30,7 @@ const AddForm = ({ onCancel, onSuccess }) => {
     try {
       const data = new FormData(e.target);
 
-      await axios.post("http://localhost:3000/api/addMenu", data, {
+      await axios.post("https://cafe-management-a7uc.onrender.com/api/addMenu", data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 

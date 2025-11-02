@@ -20,7 +20,7 @@ function Admin() {
 
   const fetchOrders = async () => {
     try {
-      const { data } = await axios.get("http://localhost:3000/api/allOrders");
+      const { data } = await axios.get("https://cafe-management-a7uc.onrender.com/api/allOrders");
       return data.orders || [];
     } catch (err) {
       console.log("error : ", err.message);
@@ -35,7 +35,7 @@ function Admin() {
 
   const fetchMenuItems = async () => {
     try {
-      const res = await axios.get("http://localhost:3000/api/menu");
+      const res = await axios.get("https://cafe-management-a7uc.onrender.com/api/menu");
       setMenuItems(res.data);
     } catch (error) {
       console.error("Error fetching menu:", error);
@@ -80,7 +80,7 @@ function Admin() {
     if (!window.confirm("Are you sure you want to delete this item?")) return;
 
     try {
-      await axios.delete(`http://localhost:3000/api/menu/${id}`);
+      await axios.delete(`https://cafe-management-a7uc.onrender.com/api/menu/${id}`);
       alert("Item deleted successfully");
       fetchMenuItems();
     } catch (err) {

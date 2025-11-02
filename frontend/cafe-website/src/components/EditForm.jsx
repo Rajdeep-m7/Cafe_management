@@ -43,7 +43,7 @@ const EditForm = ({ item, onCancel, onSuccess }) => {
     setLoading(true);
 
     try {
-      await axios.put(`http://localhost:3000/api/menu/${item._id}`, formData, {
+      await axios.put(`https://cafe-management-a7uc.onrender.com/api/menu/${item._id}`, formData, {
         headers: { "Content-Type": "application/json" },
       });
       onSuccess?.();

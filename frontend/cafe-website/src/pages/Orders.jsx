@@ -3,7 +3,7 @@ import OrderByPhone from "@/components/OrderByPhone";
 
 function Orders() {
   const [phone, setPhone] = useState("");
-  const [submittedPhone, setSubmittedPhone] = useState(""); // ✅ holds phone for search
+  const [submittedPhone, setSubmittedPhone] = useState(""); 
   const [error, setError] = useState("");
 
   const handleChange = (e) => {

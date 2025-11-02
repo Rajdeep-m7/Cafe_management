@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 function OrderByPhone({ phone }) {
   const fetchOrders = async () => {
    try {
-    const { data } = await axios.get(`http://localhost:3000/api/orders/${phone}`);
+    const { data } = await axios.get(`https://cafe-management-a7uc.onrender.com/api/orders/${phone}`);
     return data;
   } catch (error) {
     throw new Error(

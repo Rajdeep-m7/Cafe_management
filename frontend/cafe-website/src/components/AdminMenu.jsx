@@ -3,7 +3,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 
 function AdminMenu({ name, price, description, image, onEdit, onDelete }) {
   return (
-    <div className='rounded-2xl h-90 bg-white shadow-md hover:shadow-lg transition'>
+    <div className='rounded-2xl h-90 bg-white shadow-xl hover:shadow-2xl transition'>
       <img
         className='h-48 w-full object-cover object-top rounded-t-2xl'
         src={image}

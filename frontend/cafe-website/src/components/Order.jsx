@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 
-const BASE_URL = "http://localhost:3000/api/orders";
+const BASE_URL = "https://cafe-management-a7uc.onrender.com/api/orders";
 
 function Order({ orders }) {
   const{phone , total_price , order_items ,_id}= orders;

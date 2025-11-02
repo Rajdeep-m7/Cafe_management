@@ -10,7 +10,7 @@ function MenuCard({ image, name, description, price, onAddToCart }) {
         });
   };
   return (
-    <div className='rounded-2xl h-95 bg-white shadow-xl'>
+    <div className='rounded-2xl h-95 bg-white shadow-xl hover:shadow-2xl'>
       <img
         className='h-50 w-full object-cover object-center rounded-t-2xl'
         src={image}
