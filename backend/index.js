@@ -14,7 +14,7 @@ connectDb();
 
 app.use(
   cors({
-    origin: "http://localhost:5173", 
+    origin: "https://cafe-management-frontend.onrender.com/", 
     credentials: true,
   })
 );
