@@ -12,13 +12,13 @@ function MenuCard({ image, name, description, price, onAddToCart }) {
   return (
     <div className='rounded-2xl h-95 bg-white shadow-xl hover:shadow-2xl'>
       <img
-        className='h-50 w-full object-cover object-center rounded-t-2xl'
+        className='h-55 w-full object-cover object-center rounded-t-2xl'
         src={image}
         alt={name}
       />
       <div className='p-2 px-5'>
         <h1 className='text-xl font-semibold'>{name}</h1>
-        <p className='text-gray-500'>{description}</p>
+        <p className='text-sm text-gray-500'>{description}</p>
         <p className='mt-3 font-semibold text-lg'>Price: ₹{price}</p>
 
         <button
