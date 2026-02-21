@@ -33,7 +33,7 @@ const EditForm = ({ item, onCancel, onSuccess }) => {
       );
       setFormData((prev) => ({ ...prev, image: res.data.secure_url }));
     } catch (error) {
-      console.error("Image upload failed:", error);
+      console.error("Image upload failed:", error.response.data);
       alert("Failed to upload image");
     }
   };

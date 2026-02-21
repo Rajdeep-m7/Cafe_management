@@ -25,8 +25,6 @@ function Menu() {
     "Momo",
     "Noodles",
     "Snacks",
-    "Veg",
-    "NonVeg",
     "IceCream",
   ];
 
@@ -54,14 +52,17 @@ function Menu() {
           (item) => item.category?.toLowerCase() === activeCategory.toLowerCase()
         );
   if (isLoading)
-    return <p className="p-10 text-center text-lg">Loading menu...</p>;
+    return <div className="p-10 text-center text-lg">
+      <p>Loading menu...</p>
+      <p className="text-sm">*it may take few time to load because this website's backend was deployed on a free server.</p>
+    </div>
 
   if (isError)
     return (
       <p className="p-10 text-center text-red-500 text-lg">
         Error: {error.message || "Failed to load menu"}
       </p>
-    );
+    )
 
   return (
     <div className="bg-gray-50 w-full min-h-screen md:p-10 p-5 pt-10 md:px-20 relative">
