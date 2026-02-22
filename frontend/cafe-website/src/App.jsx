@@ -14,7 +14,7 @@ function App() {
       <QueryClientProvider client={queryClient} >
         <AuthProvider >
           <CartProvider>
-            <UserRoutes />;
+            <UserRoutes />
             <ToastContainer
               position="top-right"
               autoClose={2000}

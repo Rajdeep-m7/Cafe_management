@@ -5,7 +5,7 @@ import React, { useEffect, useState } from "react";
 const BASE_URL = "https://cafe-management-a7uc.onrender.com/api/orders";
 
 function Order({ orders }) {
-  const{phone , total_price , order_items ,_id}= orders;
+  const{name, phone , total_price , order_items ,_id}= orders;
   const [status , setStatus]= useState(Order.status);
   useEffect(() => {
   setStatus(orders.status);
@@ -45,6 +45,7 @@ function Order({ orders }) {
         <option value="complete">Complete</option>
       </select>
       <h1 className="md:text-2xl font-semibold ">Order #{_id}</h1>
+      <h2 className="text-md">Name: {name}</h2>
       <div className="flex text-gray-500 text-sm mb-3 mt-2">
         <p >{phone}</p>
         <span className="mx-2"> • </span>

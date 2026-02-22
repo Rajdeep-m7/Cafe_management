@@ -2,8 +2,9 @@ import order from "../models.js/order.models.js";
 
 export const addOrder= async(req,res)=>{
     try{
-        const {phone , total_price, status , order_items} = req.body;
+        const {name, phone , total_price, status , order_items} = req.body;
         const orderDetails = await order.create({
+            name,
             phone,
             total_price,
             status: "pending",
